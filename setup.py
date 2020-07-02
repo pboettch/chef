@@ -1,5 +1,4 @@
 __title__ = 'chef'
-__version__ = '1.0.0'
 __author__ = "Christophe BLAESS, Patrick BOETTCHER"
 __email__ = 'christophe.blaess@logilin.fr, p@yai.se'
 __license__ = "GPL"
@@ -9,9 +8,21 @@ from setuptools import setup
 import os
 
 
+script_path = os.path.realpath(os.path.dirname(__file__))
+
 # Get description from the README file
-with open(os.path.join(os.path.dirname(__file__), 'README.md'), encoding='utf-8') as f:
+with open(os.path.join(script_path, 'README.md'), encoding='utf-8') as f:
     _long_description = f.read()
+
+
+with open(os.path.join(script_path, 'chef', 'chef.py')) as f:
+    for line in f:
+        if line.startswith('__version__'):
+            delim = '"' if '"' in line else "'"
+            __version__ =  line.split(delim)[1]
+            break
+    else:
+        raise RuntimeError("Unable to find version string.")
 
 
 setup(
